@@ -1,0 +1,61 @@
+What changes did you have to do to normalize your database?
+
+Table Structure Improvement: Defined separate tables for Categories, Ingredients, Steps, Recipes, RecipeIngredients, and RecipeSteps to reduce redundancy and ensure each table serves a single purpose.
+Primary and Foreign Keys: Introduced primary keys for each table and established foreign key relationships where necessary to maintain data integrity.
+Normalized Relationships: By decomposing the original recipe tables into more granular entities, transitive dependencies were avoided, ensuring each piece of information is stored in only one place to prevent data duplication.
+
+Table Definitions (Updated from Last Week's ERD):
+
+Category Table:
+
+CategoryID (Primary Key)
+Name
+Ingredient Table:
+
+IngredientID (Primary Key)
+Name
+Step Table:
+
+StepID (Primary Key)
+Description
+Recipe Table:
+
+RecipeID (Primary Key)
+Name
+CategoryID (Foreign Key referencing CategoryID in Category Table)
+RecipeIngredient Table:
+
+RecipeID (Foreign Key referencing RecipeID in Recipe Table)
+IngredientID (Foreign Key referencing IngredientID in Ingredient Table)
+Composite Primary Key (RecipeID, IngredientID)
+RecipeStep Table:
+
+RecipeID (Foreign Key referencing RecipeID in Recipe Table)
+StepID (Foreign Key referencing StepID in Step Table)
+StepNumber
+Composite Primary Key (RecipeID, StepID).
+
+Challenges when Adding Thousands of Recipes
+Performance Issues: With a massive dataset, queries might slow down, impacting response times.
+Data Integrity: Ensuring accuracy and consistency becomes critical as the volume of data increases.
+Storage Requirements: Large volumes of data may demand more storage capacity.
+Indexing and Optimization: Proper indexing strategies and query optimization will be necessary for efficient data retrieval.
+
+-- Query for vegetarian recipes with potatoes (Normalized Structure)
+SELECT DISTINCT R.recipe_name
+FROM Recipe R
+  JOIN RecipeIngredient RI ON R.RecipeID = RI.RecipeID
+  JOIN Ingredient I ON RI.IngredientID = I.IngredientID
+  JOIN Category C ON R.CategoryID = C.CategoryID
+WHERE C.Name = 'Vegetarian'
+  AND I.Name LIKE '%Potatoes%';
+
+Compared to the denormalized structure's query:
+
+-- Query for vegetarian recipes with potatoes (Denormalized Structure)
+SELECT R.Name AS recipe_name
+FROM Recipe R
+  JOIN Category C ON R.CategoryID = C.CategoryID
+WHERE C.Name = 'Vegetarian'
+  AND R.Ingredients LIKE '%Potatoes%';
+
