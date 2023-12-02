@@ -1,0 +1,27 @@
+1. What are the collections?
+Answer: In MongoDB, the collections related to the food recipes could include:
+
+"ingredient": Stores information about various ingredients.
+"recipe": Contains documents with details about different recipes.
+
+2. What information will you embed in a document, and which will you store normalized?
+Answer:
+
+Embedded Data: Certain details such as recipe steps, ingredients, and categories might be embedded within a recipe document.
+Normalized Data: References to other entities like categories and ingredients would likely be stored in separate collections.
+
+3. Discussion:
+Answers and Considerations:
+
+The decision to embed data was primarily based on the need for quick access to essential recipe details without additional database calls.
+Assumptions:
+Recipes might not have an excessive number of steps or ingredients, making it feasible to embed them.
+Limited changes are anticipated in the embedded data, reducing the need for frequent updates.
+Queries and Commands: For example, commands to add recipes, ingredients, or categories in MongoDB.
+
+4. Choosing Between MySQL and MongoDB:
+Answer: I would choose MongoDB due to its flexible schema and native support for document storage. Reasons include:
+
+Document-based structure aligns well with recipes containing varied details.
+Easier scalability and flexibility for unstructured data.
+Allows embedding data, which simplifies queries for recipes and related information.
